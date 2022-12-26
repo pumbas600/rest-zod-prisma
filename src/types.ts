@@ -1,8 +1,10 @@
 import type { DMMF } from '@prisma/generator-helper'
 import { computeCustomSchema, computeModifiers } from './docs'
+import { Variant } from './variants'
 
 export const getZodConstructor = (
 	field: DMMF.Field,
+	variant: Variant,
 	getRelatedModelName = (name: string | DMMF.SchemaEnum | DMMF.OutputType | DMMF.SchemaArg) =>
 		name.toString()
 ) => {
@@ -52,7 +54,7 @@ export const getZodConstructor = (
 		extraModifiers.push(...computeModifiers(field.documentation))
 	}
 	if (!field.isRequired && field.type !== 'Json') extraModifiers.push('nullish()')
-	// if (field.hasDefaultValue) extraModifiers.push('optional()')
+	if (variant.isOptional(field)) extraModifiers.push('optional()')
 
 	return `${zodType}${extraModifiers.join('.')}`
 }

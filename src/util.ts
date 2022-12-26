@@ -1,9 +1,14 @@
 import { DMMF } from '@prisma/generator-helper'
 import type { CodeBlockWriter } from 'ts-morph'
 import { Config } from './config'
+import { Variant } from './variants'
 
 export const writeArray = (writer: CodeBlockWriter, array: string[], newLine = true) =>
 	array.forEach((line) => writer.write(line).conditionalNewLine(newLine))
+
+export const getFileName = (variant: Variant, model: DMMF.Model) => {
+	return `${variant.name.toLowerCase()}${model.name}`
+}
 
 export const useModelNames = ({ modelCase, modelSuffix, relationModel }: Config) => {
 	const formatModelName = (name: string, prefix = '') => {

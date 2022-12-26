@@ -7,9 +7,10 @@ import {
 	VariableDeclarationKind,
 } from 'ts-morph'
 import { Config, PrismaOptions } from './config'
-import { dotSlash, needsRelatedModel, useModelNames, writeArray } from './util'
+import { dotSlash, getFileName, needsRelatedModel, useModelNames, writeArray } from './util'
 import { getJSDocs } from './docs'
 import { getZodConstructor } from './types'
+import { Variant, Variants } from './variants'
 
 export const writeImportsForModel = (
 	model: DMMF.Model,
@@ -128,6 +129,7 @@ export const generateSchemaForModel = (
 	model: DMMF.Model,
 	sourceFile: SourceFile,
 	config: Config,
+	variant: Variant,
 	_prismaOptions: PrismaOptions
 ) => {
 	const { modelName } = useModelNames(config)
@@ -138,17 +140,19 @@ export const generateSchemaForModel = (
 		leadingTrivia: (writer) => writer.blankLineIfLastNot(),
 		declarations: [
 			{
-				name: modelName(model.name),
+				name: modelName(`${variant.name}${model.name}`),
 				initializer(writer) {
 					writer
 						.write('z.object(')
 						.inlineBlock(() => {
 							model.fields
-								.filter((f) => f.kind !== 'object')
+								.filter((f) => f.kind !== 'object' && !variant.isIgnored(f))
 								.forEach((field) => {
 									writeArray(writer, getJSDocs(field.documentation))
 									writer
-										.write(`${field.name}: ${getZodConstructor(field)}`)
+										.write(
+											`${field.name}: ${getZodConstructor(field, variant)}`
+										)
 										.write(',')
 										.newLine()
 								})
@@ -164,6 +168,7 @@ export const generateRelatedSchemaForModel = (
 	model: DMMF.Model,
 	sourceFile: SourceFile,
 	config: Config,
+	variant: Variant,
 	_prismaOptions: PrismaOptions
 ) => {
 	const { modelName, relatedModelName } = useModelNames(config)
@@ -171,7 +176,7 @@ export const generateRelatedSchemaForModel = (
 	const relationFields = model.fields.filter((f) => f.kind === 'object')
 
 	sourceFile.addInterface({
-		name: `Complete${model.name}`,
+		name: `Complete${variant.name}${model.name}`,
 		isExported: true,
 		extends: [`z.infer<typeof ${modelName(model.name)}>`],
 		properties: relationFields.map((f) => ({
@@ -186,7 +191,7 @@ export const generateRelatedSchemaForModel = (
 			'',
 			'/**',
 			` * ${relatedModelName(
-				model.name
+				`${variant.name}${model.name}`
 			)} contains all relations on your model in addition to the scalars`,
 			' *',
 			' * NOTE: Lazy required in case of potential circular dependencies within schema',
@@ -212,6 +217,7 @@ export const generateRelatedSchemaForModel = (
 									.write(
 										`${field.name}: ${getZodConstructor(
 											field,
+											variant,
 											relatedModelName
 										)}`
 									)
@@ -230,19 +236,22 @@ export const populateModelFile = (
 	model: DMMF.Model,
 	sourceFile: SourceFile,
 	config: Config,
+	variant: Variant,
 	prismaOptions: PrismaOptions
 ) => {
 	writeImportsForModel(model, sourceFile, config, prismaOptions)
 	writeTypeSpecificSchemas(model, sourceFile, config, prismaOptions)
-	generateSchemaForModel(model, sourceFile, config, prismaOptions)
+	generateSchemaForModel(model, sourceFile, config, variant, prismaOptions)
 	if (needsRelatedModel(model, config))
-		generateRelatedSchemaForModel(model, sourceFile, config, prismaOptions)
+		generateRelatedSchemaForModel(model, sourceFile, config, variant, prismaOptions)
 }
 
 export const generateBarrelFile = (models: DMMF.Model[], indexFile: SourceFile) => {
 	models.forEach((model) =>
-		indexFile.addExportDeclaration({
-			moduleSpecifier: `./${model.name.toLowerCase()}`,
+		Object.values(Variants).forEach((variant) => {
+			indexFile.addExportDeclaration({
+				moduleSpecifier: `./${getFileName(variant, model)}`,
+			})
 		})
 	)
 }

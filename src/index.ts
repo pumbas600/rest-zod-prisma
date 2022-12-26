@@ -6,6 +6,8 @@ import { SemicolonPreference } from 'typescript'
 import { configSchema, PrismaOptions } from './config'
 import { populateModelFile, generateBarrelFile } from './generator'
 import { Project } from 'ts-morph'
+import { Variants } from './variants'
+import { getFileName } from './util'
 
 generatorHandler({
 	onManifest() {
@@ -54,18 +56,20 @@ generatorHandler({
 		})
 
 		models.forEach((model) => {
-			const sourceFile = project.createSourceFile(
-				`${outputPath}/${model.name.toLowerCase()}.ts`,
-				{},
-				{ overwrite: true }
-			)
+			Object.values(Variants).forEach((variant) => {
+				const sourceFile = project.createSourceFile(
+					`${outputPath}/${getFileName(variant, model)}.ts`,
+					{},
+					{ overwrite: true }
+				)
 
-			populateModelFile(model, sourceFile, config, prismaOptions)
+				populateModelFile(model, sourceFile, config, variant, prismaOptions)
 
-			sourceFile.formatText({
-				indentSize: 2,
-				convertTabsToSpaces: true,
-				semicolons: SemicolonPreference.Remove,
+				sourceFile.formatText({
+					indentSize: 4,
+					convertTabsToSpaces: true,
+					semicolons: SemicolonPreference.Insert,
+				})
 			})
 		})
 
