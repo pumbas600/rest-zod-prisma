@@ -1,16 +1,16 @@
-import path from "path"
-import { DMMF } from "@prisma/generator-helper"
+import path from 'path'
+import { DMMF } from '@prisma/generator-helper'
 import {
 	ImportDeclarationStructure,
 	SourceFile,
 	StructureKind,
 	VariableDeclarationKind,
-} from "ts-morph"
-import { Config, PrismaOptions } from "./config"
-import { dotSlash, getFilename, needsRelatedModel, useModelNames, writeArray } from "./util"
-import { getJSDocs } from "./docs"
-import { getZodConstructor } from "./types"
-import { Variant, Variants } from "./variants"
+} from 'ts-morph'
+import { Config, PrismaOptions } from './config'
+import { dotSlash, getFilename, needsRelatedModel, useModelNames, writeArray } from './util'
+import { getJSDocs } from './docs'
+import { getZodConstructor } from './types'
+import { Variant, Variants } from './variants'
 
 export const writeImportsForModel = (
 	model: DMMF.Model,
@@ -23,31 +23,31 @@ export const writeImportsForModel = (
 	const importList: ImportDeclarationStructure[] = [
 		{
 			kind: StructureKind.ImportDeclaration,
-			namespaceImport: "z",
-			moduleSpecifier: "zod",
+			namespaceImport: 'z',
+			moduleSpecifier: 'zod',
 		},
 	]
 
 	if (config.imports) {
 		importList.push({
 			kind: StructureKind.ImportDeclaration,
-			namespaceImport: "imports",
+			namespaceImport: 'imports',
 			moduleSpecifier: dotSlash(
 				path.relative(outputPath, path.resolve(path.dirname(schemaPath), config.imports))
 			),
 		})
 	}
 
-	if (config.useDecimalJs && model.fields.some((f) => f.type === "Decimal")) {
+	if (config.useDecimalJs && model.fields.some((f) => f.type === 'Decimal')) {
 		importList.push({
 			kind: StructureKind.ImportDeclaration,
-			namedImports: ["Decimal"],
-			moduleSpecifier: "decimal.js",
+			namedImports: ['Decimal'],
+			moduleSpecifier: 'decimal.js',
 		})
 	}
 
-	const enumFields = model.fields.filter((f) => f.kind === "enum")
-	const relationFields = model.fields.filter((f) => f.kind === "object")
+	const enumFields = model.fields.filter((f) => f.kind === 'enum')
+	const relationFields = model.fields.filter((f) => f.kind === 'object')
 	const relativePath = path.relative(outputPath, clientPath)
 
 	if (enumFields.length > 0) {
@@ -65,7 +65,7 @@ export const writeImportsForModel = (
 		if (filteredFields.length > 0) {
 			importList.push({
 				kind: StructureKind.ImportDeclaration,
-				moduleSpecifier: "./index",
+				moduleSpecifier: './index',
 				namedImports: Array.from(
 					new Set(
 						filteredFields.flatMap((f) => [
@@ -87,40 +87,40 @@ export const writeTypeSpecificSchemas = (
 	config: Config,
 	_prismaOptions: PrismaOptions
 ) => {
-	if (model.fields.some((f) => f.type === "Json")) {
+	if (model.fields.some((f) => f.type === 'Json')) {
 		sourceFile.addStatements((writer) => {
 			writer.newLine()
 			writeArray(writer, [
-				"// Helper schema for JSON fields",
+				'// Helper schema for JSON fields',
 				`type Literal = boolean | number | string${
-					config.prismaJsonNullability ? "" : "| null"
+					config.prismaJsonNullability ? '' : '| null'
 				}`,
-				"type Json = Literal | { [key: string]: Json } | Json[]",
+				'type Json = Literal | { [key: string]: Json } | Json[]',
 				`const literalSchema = z.union([z.string(), z.number(), z.boolean()${
-					config.prismaJsonNullability ? "" : ", z.null()"
+					config.prismaJsonNullability ? '' : ', z.null()'
 				}])`,
-				"const jsonSchema: z.ZodSchema<Json> = z.lazy(() => z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)]))",
+				'const jsonSchema: z.ZodSchema<Json> = z.lazy(() => z.union([literalSchema, z.array(jsonSchema), z.record(jsonSchema)]))',
 			])
 		})
 	}
 
-	if (config.useDecimalJs && model.fields.some((f) => f.type === "Decimal")) {
+	if (config.useDecimalJs && model.fields.some((f) => f.type === 'Decimal')) {
 		sourceFile.addStatements((writer) => {
 			writer.newLine()
 			writeArray(writer, [
-				"// Helper schema for Decimal fields",
-				"z",
-				".instanceof(Decimal)",
-				".or(z.string())",
-				".or(z.number())",
-				".refine((value) => {",
-				"  try {",
-				"    return new Decimal(value);",
-				"  } catch (error) {",
-				"    return false;",
-				"  }",
-				"})",
-				".transform((value) => new Decimal(value));",
+				'// Helper schema for Decimal fields',
+				'z',
+				'.instanceof(Decimal)',
+				'.or(z.string())',
+				'.or(z.number())',
+				'.refine((value) => {',
+				'  try {',
+				'    return new Decimal(value);',
+				'  } catch (error) {',
+				'    return false;',
+				'  }',
+				'})',
+				'.transform((value) => new Decimal(value));',
 			])
 		})
 	}
@@ -144,21 +144,21 @@ export const generateSchemaForModel = (
 				name: modelName(model.name),
 				initializer(writer) {
 					writer
-						.write("z.object(")
+						.write('z.object(')
 						.inlineBlock(() => {
 							model.fields
-								.filter((f) => f.kind !== "object" && !variant.isIgnored(f))
+								.filter((f) => f.kind !== 'object' && !variant.isIgnored(f))
 								.forEach((field) => {
 									writeArray(writer, getJSDocs(field.documentation))
 									writer
 										.write(
 											`${field.name}: ${getZodConstructor(field, variant)}`
 										)
-										.write(",")
+										.write(',')
 										.newLine()
 								})
 						})
-						.write(")")
+						.write(')')
 				},
 			},
 		],
@@ -174,7 +174,7 @@ export const generateRelatedSchemaForModel = (
 ) => {
 	const { modelName, relatedModelName } = useModelNames(config, variant)
 
-	const relationFields = model.fields.filter((f) => f.kind === "object" && !variant.isIgnored(f))
+	const relationFields = model.fields.filter((f) => f.kind === 'object' && !variant.isIgnored(f))
 
 	sourceFile.addInterface({
 		name: `Complete${variant.name + model.name}`,
@@ -183,22 +183,22 @@ export const generateRelatedSchemaForModel = (
 		properties: relationFields.map((f) => ({
 			hasQuestionToken: !f.isRequired || variant.isOptional(f),
 			name: f.name,
-			type: `Complete${variant.name + f.type}${f.isList ? "[]" : ""}${
-				!f.isRequired ? " | null" : ""
+			type: `Complete${variant.name + f.type}${f.isList ? '[]' : ''}${
+				!f.isRequired ? ' | null' : ''
 			}`,
 		})),
 	})
 
 	sourceFile.addStatements((writer) =>
 		writeArray(writer, [
-			"",
-			"/**",
+			'',
+			'/**',
 			` * ${relatedModelName(
 				model.name
 			)} contains all relations on your model in addition to the scalars`,
-			" *",
-			" * NOTE: Lazy required in case of potential circular dependencies within schema",
-			" */",
+			' *',
+			' * NOTE: Lazy required in case of potential circular dependencies within schema',
+			' */',
 		])
 	)
 
@@ -224,11 +224,11 @@ export const generateRelatedSchemaForModel = (
 											relatedModelName
 										)}`
 									)
-									.write(",")
+									.write(',')
 									.newLine()
 							})
 						})
-						.write("))")
+						.write('))')
 				},
 			},
 		],
