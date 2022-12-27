@@ -11,7 +11,7 @@ generator client {
 }
 
 generator zod {
-  provider      = "../bin/cli.js"
+  provider      = "node ../dist/index.js"
   output        = "./zod"
   relationModel = "default"
 }
