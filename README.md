@@ -48,7 +48,8 @@
 </p>
 
 > **Note**
-> Rest Zod Prisma is a fork of [Zod Prisma](https://github.com/CarterGrimmeisen/zod-prisma) which generates variants of each Prisma model. They have been designed specifically to validate the request body of common rest endpoints. Credit for majority of this generator goes to Carter Grimmenisen for their work on Zod Prisma
+> 
+> This is a fork of [Zod Prisma](https://github.com/CarterGrimmeisen/zod-prisma) which generates variants of each Prisma model. They have been designed specifically to validate the request body of common rest endpoints. Credit for majority of this generator goes to Carter Grimmenisen for their work on Zod Prisma
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
