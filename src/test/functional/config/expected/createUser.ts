@@ -6,6 +6,8 @@ export const _createUserSchema = z.object({
   email: z.string(),
 })
 
+export type CreateUser = z.infer<typeof _createUserSchema>
+
 export interface CompleteCreateUser extends z.infer<typeof _createUserSchema> {
   posts: CompleteCreatePost[]
 }

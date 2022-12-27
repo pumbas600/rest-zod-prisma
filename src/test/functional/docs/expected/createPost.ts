@@ -10,3 +10,5 @@ export const CreatePostModel = z.object({
    */
   contents: z.string().max(10240),
 })
+
+export type CreatePost = z.infer<typeof CreatePostModel>

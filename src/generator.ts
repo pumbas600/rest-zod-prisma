@@ -7,7 +7,14 @@ import {
 	VariableDeclarationKind,
 } from 'ts-morph'
 import { Config, PrismaOptions } from './config'
-import { dotSlash, getFilename, needsRelatedModel, useModelNames, writeArray } from './util'
+import {
+	dotSlash,
+	getFilename,
+	getModelType,
+	needsRelatedModel,
+	useModelNames,
+	writeArray,
+} from './util'
 import { getJSDocs } from './docs'
 import { getZodConstructor } from './types'
 import { Variant, Variants } from './variants'
@@ -163,6 +170,14 @@ export const generateSchemaForModel = (
 			},
 		],
 	})
+
+	if (!variant.exportType) return
+
+	sourceFile.addTypeAlias({
+		isExported: true,
+		name: variant.name + model.name,
+		type: getModelType(modelName(model.name)),
+	})
 }
 
 export const generateRelatedSchemaForModel = (
@@ -179,7 +194,7 @@ export const generateRelatedSchemaForModel = (
 	sourceFile.addInterface({
 		name: `Complete${variant.name + model.name}`,
 		isExported: true,
-		extends: [`z.infer<typeof ${modelName(model.name)}>`],
+		extends: [getModelType(modelName(model.name))],
 		properties: relationFields.map((f) => ({
 			hasQuestionToken: !f.isRequired || variant.isOptional(f),
 			name: f.name,

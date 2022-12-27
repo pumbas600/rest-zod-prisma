@@ -4,6 +4,8 @@ import { CompleteCreateKeychain, RelatedCreateKeychainModel } from "./index"
 export const CreateUserModel = z.object({
 })
 
+export type CreateUser = z.infer<typeof CreateUserModel>
+
 export interface CompleteCreateUser extends z.infer<typeof CreateUserModel> {
   keychain?: CompleteCreateKeychain | null
 }

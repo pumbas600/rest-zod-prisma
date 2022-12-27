@@ -13,3 +13,5 @@ export const PatchSpreadsheetModel = z.object({
   created: z.date().optional(),
   updated: z.date().optional(),
 })
+
+export type PatchSpreadsheet = z.infer<typeof PatchSpreadsheetModel>

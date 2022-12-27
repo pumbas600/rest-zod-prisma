@@ -6,6 +6,10 @@ import { Variant } from './variants'
 export const writeArray = (writer: CodeBlockWriter, array: string[], newLine = true) =>
 	array.forEach((line) => writer.write(line).conditionalNewLine(newLine))
 
+export const getModelType = (modelName: string) => {
+	return `z.infer<typeof ${modelName}>`
+}
+
 export const getFilename = (variant: Variant, model: DMMF.Model) => {
 	return lowercaseFirstLetter(variant.name + model.name)
 }

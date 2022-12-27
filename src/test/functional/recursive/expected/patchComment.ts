@@ -6,6 +6,8 @@ export const PatchCommentModel = z.object({
   parentId: z.string().optional(),
 })
 
+export type PatchComment = z.infer<typeof PatchCommentModel>
+
 export interface CompletePatchComment extends z.infer<typeof PatchCommentModel> {
   parent?: CompletePatchComment
   children?: CompletePatchComment[]

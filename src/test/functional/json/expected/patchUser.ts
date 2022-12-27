@@ -11,6 +11,8 @@ export const PatchUserModel = z.object({
   meta: jsonSchema.optional(),
 })
 
+export type PatchUser = z.infer<typeof PatchUserModel>
+
 export interface CompletePatchUser extends z.infer<typeof PatchUserModel> {
   posts?: CompletePatchPost[]
 }

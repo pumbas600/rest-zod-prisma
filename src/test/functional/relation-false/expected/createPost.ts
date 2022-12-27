@@ -5,3 +5,5 @@ export const CreatePostModel = z.object({
   contents: z.string(),
   userId: z.string(),
 })
+
+export type CreatePost = z.infer<typeof CreatePostModel>

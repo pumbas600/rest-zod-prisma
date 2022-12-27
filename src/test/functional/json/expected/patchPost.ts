@@ -5,6 +5,8 @@ export const PatchPostModel = z.object({
   authorId: z.number().int().optional(),
 })
 
+export type PatchPost = z.infer<typeof PatchPostModel>
+
 export interface CompletePatchPost extends z.infer<typeof PatchPostModel> {
   author?: CompletePatchUser
 }

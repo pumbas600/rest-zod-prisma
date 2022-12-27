@@ -7,6 +7,8 @@ export const _patchPostSchema = z.object({
   userId: z.string().optional(),
 })
 
+export type PatchPost = z.infer<typeof _patchPostSchema>
+
 export interface CompletePatchPost extends z.infer<typeof _patchPostSchema> {
   author?: CompletePatchUser
 }

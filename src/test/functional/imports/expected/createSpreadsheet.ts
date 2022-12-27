@@ -15,6 +15,8 @@ export const CreateSpreadsheetModel = z.object({
   updated: z.date().optional(),
 })
 
+export type CreateSpreadsheet = z.infer<typeof CreateSpreadsheetModel>
+
 export interface CompleteCreateSpreadsheet extends z.infer<typeof CreateSpreadsheetModel> {
   presentations: CompleteCreatePresentation[]
 }

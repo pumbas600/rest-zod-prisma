@@ -13,3 +13,5 @@ export const CreateSpreadsheetModel = z.object({
   created: z.date().optional(),
   updated: z.date().optional(),
 })
+
+export type CreateSpreadsheet = z.infer<typeof CreateSpreadsheetModel>

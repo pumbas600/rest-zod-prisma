@@ -5,6 +5,8 @@ export const CreateKeychainModel = z.object({
   userID: z.string(),
 })
 
+export type CreateKeychain = z.infer<typeof CreateKeychainModel>
+
 export interface CompleteCreateKeychain extends z.infer<typeof CreateKeychainModel> {
   owner: CompleteCreateUser
 }

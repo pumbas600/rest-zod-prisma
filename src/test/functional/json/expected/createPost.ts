@@ -5,6 +5,8 @@ export const CreatePostModel = z.object({
   authorId: z.number().int(),
 })
 
+export type CreatePost = z.infer<typeof CreatePostModel>
+
 export interface CompleteCreatePost extends z.infer<typeof CreatePostModel> {
   author: CompleteCreateUser
 }

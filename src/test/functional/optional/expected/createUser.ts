@@ -11,6 +11,8 @@ export const CreateUserModel = z.object({
   meta: jsonSchema,
 })
 
+export type CreateUser = z.infer<typeof CreateUserModel>
+
 export interface CompleteCreateUser extends z.infer<typeof CreateUserModel> {
   posts?: CompleteCreatePost | null
 }

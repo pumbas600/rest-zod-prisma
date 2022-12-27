@@ -4,6 +4,8 @@ import { CompletePatchUser, RelatedPatchUserModel } from "./index"
 export const PatchKeychainModel = z.object({
 })
 
+export type PatchKeychain = z.infer<typeof PatchKeychainModel>
+
 export interface CompletePatchKeychain extends z.infer<typeof PatchKeychainModel> {
   owner?: CompletePatchUser
 }

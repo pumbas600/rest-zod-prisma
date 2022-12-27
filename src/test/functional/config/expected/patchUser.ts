@@ -6,6 +6,8 @@ export const _patchUserSchema = z.object({
   email: z.string().optional(),
 })
 
+export type PatchUser = z.infer<typeof _patchUserSchema>
+
 export interface CompletePatchUser extends z.infer<typeof _patchUserSchema> {
   posts?: CompletePatchPost[]
 }

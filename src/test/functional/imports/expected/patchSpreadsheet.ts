@@ -15,6 +15,8 @@ export const PatchSpreadsheetModel = z.object({
   updated: z.date().optional(),
 })
 
+export type PatchSpreadsheet = z.infer<typeof PatchSpreadsheetModel>
+
 export interface CompletePatchSpreadsheet extends z.infer<typeof PatchSpreadsheetModel> {
   presentations?: CompletePatchPresentation[]
 }

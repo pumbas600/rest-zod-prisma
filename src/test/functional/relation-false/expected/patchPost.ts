@@ -5,3 +5,5 @@ export const PatchPostModel = z.object({
   contents: z.string().optional(),
   userId: z.string().optional(),
 })
+
+export type PatchPost = z.infer<typeof PatchPostModel>

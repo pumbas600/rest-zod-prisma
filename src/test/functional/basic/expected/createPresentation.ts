@@ -7,3 +7,5 @@ export const CreatePresentationModel = z.object({
   created: z.date().optional(),
   updated: z.date().optional(),
 })
+
+export type CreatePresentation = z.infer<typeof CreatePresentationModel>

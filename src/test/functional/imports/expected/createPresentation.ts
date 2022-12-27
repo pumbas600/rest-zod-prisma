@@ -9,6 +9,8 @@ export const CreatePresentationModel = z.object({
   updated: z.date().optional(),
 })
 
+export type CreatePresentation = z.infer<typeof CreatePresentationModel>
+
 export interface CompleteCreatePresentation extends z.infer<typeof CreatePresentationModel> {
   spreadsheets: CompleteCreateSpreadsheet[]
 }

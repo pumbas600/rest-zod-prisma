@@ -7,6 +7,8 @@ export const _createPostSchema = z.object({
   userId: z.string(),
 })
 
+export type CreatePost = z.infer<typeof _createPostSchema>
+
 export interface CompleteCreatePost extends z.infer<typeof _createPostSchema> {
   author: CompleteCreateUser
 }

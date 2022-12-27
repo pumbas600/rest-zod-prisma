@@ -9,6 +9,8 @@ export const PatchPresentationModel = z.object({
   updated: z.date().optional(),
 })
 
+export type PatchPresentation = z.infer<typeof PatchPresentationModel>
+
 export interface CompletePatchPresentation extends z.infer<typeof PatchPresentationModel> {
   spreadsheets?: CompletePatchSpreadsheet[]
 }

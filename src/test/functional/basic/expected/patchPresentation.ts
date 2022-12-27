@@ -7,3 +7,5 @@ export const PatchPresentationModel = z.object({
   created: z.date().optional(),
   updated: z.date().optional(),
 })
+
+export type PatchPresentation = z.infer<typeof PatchPresentationModel>

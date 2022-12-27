@@ -7,3 +7,5 @@ export const CreateDocumentModel = z.object({
   created: z.date().optional(),
   updated: z.date().optional(),
 })
+
+export type CreateDocument = z.infer<typeof CreateDocumentModel>

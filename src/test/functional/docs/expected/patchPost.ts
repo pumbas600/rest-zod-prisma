@@ -10,3 +10,5 @@ export const PatchPostModel = z.object({
    */
   contents: z.string().max(10240).optional(),
 })
+
+export type PatchPost = z.infer<typeof PatchPostModel>
