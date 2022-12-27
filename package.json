@@ -1,19 +1,19 @@
 {
-	"name": "zod-prisma",
-	"version": "0.5.4",
-	"description": "A Prisma generator that creates Zod schemas for all of your models",
+	"name": "rest-zod-prisma",
+	"version": "1.0.0",
+	"description": "A Prisma generator that creates Zod schemas for common rest endpoints from your Prisma models",
 	"license": "MIT",
-	"author": "Carter Grimmeisen",
-	"homepage": "https://github.com/CarterGrimmeisen/zod-prisma#readme",
+	"author": "Josh Jeffers",
+	"homepage": "https://github.com/pumbas600/rest-zod-prisma#readme",
 	"repository": {
 		"type": "git",
-		"url": "https://github.com/CarterGrimmeisen/zod-prisma.git"
+		"url": "https://github.com/pumbas600/rest-zod-prisma.git"
 	},
 	"bugs": {
-		"url": "https://github.com/CarterGrimmeisen/zod-prisma/issues"
+		"url": "https://github.com/pumbas600/rest-zod-prisma/issues"
 	},
 	"main": "dist/index.js",
-	"module": "dist/zod-prisma.esm.js",
+	"module": "dist/rest-zod-prisma.esm.js",
 	"typings": "dist/index.d.ts",
 	"bin": {
 		"zod-prisma": "bin/cli.js"

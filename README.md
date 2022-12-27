@@ -30,22 +30,25 @@
 <br />
 <p align="center">
   <a href="https://github.com/CarterGrimmeisen/zod-prisma">
-    <img src="https://raw.githubusercontent.com/CarterGrimmeisen/zod-prisma/main/images/zod-prisma.svg" alt="Logo" width="120" height="120">
+    <img src="./images/zod-prisma.svg" alt="Logo" width="120" height="120">
   </a>
-  <h3 align="center">Zod Prisma</h3>
+  <h3 align="center">Rest Zod Prisma</h3>
   <p align="center">
-    A custom prisma generator that creates Zod schemas from your Prisma model.
+		A Prisma generator that creates Zod schemas for common rest endpoints from your Prisma models.
     <br />
-    <a href="https://github.com/CarterGrimmeisen/zod-prisma"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/pumbas600/rest-zod-prisma"><strong>Explore the docs »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/CarterGrimmeisen/zod-prisma/blob/main/src/test/functional">View Demo</a>
+    <a href="https://github.com/pumbas600/rest-zod-prisma/blob/main/src/test/functional">View Demo</a>
     ·
-    <a href="https://github.com/CarterGrimmeisen/zod-prisma/issues">Report Bug</a>
+    <a href="https://github.com/pumbas600/rest-zod-prisma/issues">Report Bug</a>
     ·
-    <a href="https://github.com/CarterGrimmeisen/zod-prisma/issues">Request Feature</a>
+    <a href="https://github.com/pumbas600/rest-zod-prisma/issues">Request Feature</a>
   </p>
 </p>
+
+> **Note**
+> Rest Zod Prisma is a fork of [Zod Prisma](https://github.com/CarterGrimmeisen/zod-prisma) which generates variants of each Prisma model. They have been designed specifically to validate the request body of common rest endpoints. Credit for majority of this generator goes to Carter Grimmenisen for their work on Zod Prisma
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
@@ -122,14 +125,14 @@ npm install -g yarn
 1.  Add zod-prisma as a dev dependency
 
     ```sh
-    yarn add -D zod-prisma
+    yarn add -D rest-zod-prisma
     ```
 
 2.  Add the zod-prisma generator to your schema.prisma
 
     ```prisma
     generator zod {
-      provider                 = "zod-prisma"
+      provider                 = "rest-zod-prisma"
       output                   = "./zod" // (default) the directory where generated zod schemas will be saved
 
       relationModel            = true // (default) Create and export both plain and related models.
@@ -233,7 +236,7 @@ zod-prisma enables you to reuse these by importing them via a config options. Fo
 
 ```prisma
 generator zod {
-  provider      = "zod-prisma"
+  provider      = "rest-zod-prisma"
   output        = "./zod"
   imports 		  = "../src/zod-schemas"
 }
@@ -307,8 +310,8 @@ Project Link: [https://github.com/CarterGrimmeisen/zod-prisma](https://github.co
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 
-[npm-shield]: https://img.shields.io/npm/v/zod-prisma?style=for-the-badge
-[npm-url]: https://www.npmjs.com/package/zod-prisma
+[npm-shield]: https://img.shields.io/npm/v/rest-zod-prisma?style=for-the-badge
+[npm-url]: https://www.npmjs.com/package/rest-zod-prisma
 [contributors-shield]: https://img.shields.io/github/contributors/CarterGrimmeisen/zod-prisma.svg?style=for-the-badge
 [contributors-url]: https://github.com/CarterGrimmeisen/zod-prisma/graphs/contributors
 [forks-shield]: https://img.shields.io/github/forks/CarterGrimmeisen/zod-prisma.svg?style=for-the-badge

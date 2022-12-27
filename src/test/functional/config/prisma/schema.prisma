@@ -12,7 +12,7 @@ generator client {
 }
 
 generator zod {
-  provider      = "zod-prisma"
+  provider      = "rest-zod-prisma"
   output        = "../actual/"
   relationModel = "default"
   modelCase     = "camelCase"

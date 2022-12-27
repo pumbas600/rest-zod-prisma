@@ -13,7 +13,7 @@ generatorHandler({
 	onManifest() {
 		return {
 			version,
-			prettyName: 'Zod Schemas',
+			prettyName: 'Rest Zod Schemas',
 			defaultOutput: 'zod',
 		}
 	},
