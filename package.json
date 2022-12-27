@@ -1,6 +1,6 @@
 {
 	"name": "rest-zod-prisma",
-	"version": "1.0.3",
+	"version": "1.0.4",
 	"description": "A Prisma generator that creates Zod schemas for common rest endpoints from your Prisma models",
 	"license": "MIT",
 	"author": "Josh Jeffers",
