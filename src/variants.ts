@@ -1,4 +1,4 @@
-import { DMMF } from '@prisma/generator-helper'
+import { DMMF } from "@prisma/generator-helper"
 
 export interface Variant {
 	name: string
@@ -8,17 +8,17 @@ export interface Variant {
 
 export const Variants: Record<string, Variant> = {
 	Default: {
-		name: 'Default',
+		name: "",
 		isIgnored: () => false,
 		isOptional: () => false,
 	},
 	Create: {
-		name: 'Create',
+		name: "Create",
 		isIgnored: (field) => field.isId && field.hasDefaultValue,
 		isOptional: (field) => field.hasDefaultValue,
 	},
 	Patch: {
-		name: 'Patch',
+		name: "Patch",
 		isIgnored: (field) => field.isId,
 		isOptional: () => true,
 	},
